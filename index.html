@@ -129,7 +129,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             padding: 10px;
         }
         .chat-bubble {
@@ -151,6 +151,20 @@
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
+        }
+
+        /* Hint Box Arabic */
+        .hint-box {
+            background: #fff8e1;
+            border-right: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            direction: rtl;
+            text-align: right;
+            font-family: 'Amiri', serif;
+            font-size: 1.1rem;
+            color: #333;
         }
 
         /* --- Options Grid --- */
@@ -296,7 +310,6 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* Confetti */
         .confetti {
             position: absolute;
             width: 10px;
@@ -398,42 +411,42 @@
     </div>
 
     <script>
-        // --- DATA STRUCTURE (34 Words) ---
+        // --- DATA STRUCTURE (34 Words with Arabic Explanations added!) ---
         const expressions = [
-            { id: 1, text: "Chop", arabic: "يقطع (قطعا صغيرة)", explanation: "To cut food into small irregular pieces.", examples: ["Chop the onions carefully.", "I need to chop some garlic."], category: "cutting" },
-            { id: 2, text: "Slice", arabic: "يشرح (إلى شرائح)", explanation: "To cut food into thin, flat pieces.", examples: ["Slice the bread for toast.", "She sliced the tomatoes."], category: "cutting" },
-            { id: 3, text: "Dice", arabic: "يقطع لمكعبات", explanation: "To cut food into small cubes.", examples: ["Dice the potatoes for the soup.", "He diced the carrots."], category: "cutting" },
-            { id: 4, text: "Peel", arabic: "يقشر", explanation: "To remove the outer skin of fruit or vegetable.", examples: ["Can you peel the apple?", "Peel the potatoes before boiling."], category: "prep" },
-            { id: 5, text: "Drain", arabic: "يصفي (من الماء)", explanation: "To remove liquid from food using a strainer.", examples: ["Drain the pasta well.", "Drain the beans before cooking."], category: "prep" },
-            { id: 6, text: "Mash", arabic: "يهرس", explanation: "To crush food into a soft mass.", examples: ["Mash the bananas for the cake.", "I love mashed potatoes."], category: "prep" },
-            { id: 7, text: "Pour", arabic: "يصب / يسكب", explanation: "To make liquid flow from a container.", examples: ["Pour the milk into the bowl.", "Can you pour me some water?"], category: "serving" },
-            { id: 8, text: "Break", arabic: "يكسر", explanation: "To separate into pieces (often used for eggs).", examples: ["Break two eggs into the pan.", "Careful not to break the shell."], category: "prep" },
-            { id: 9, text: "Squeeze", arabic: "يعصر", explanation: "To press firmly to extract liquid.", examples: ["Squeeze the lemon over the fish.", "I squeezed fresh oranges."], category: "prep" },
-            { id: 10, text: "Fry", arabic: "يقلي", explanation: "To cook food in hot oil or fat.", examples: ["Fry the eggs in butter.", "We are making fried chicken."], category: "cooking" },
-            { id: 11, text: "Boil", arabic: "يغلي / يسلق", explanation: "To cook in water at 100°C.", examples: ["Boil the water for tea.", "I boiled some eggs."], category: "cooking" },
-            { id: 12, text: "Simmer", arabic: "يغلي ببطء", explanation: "To cook gently just below the boiling point.", examples: ["Let the soup simmer for an hour.", "Simmer the sauce gently."], category: "cooking" },
-            { id: 13, text: "Steam", arabic: "يطبخ على البخار", explanation: "To cook food using water vapor.", examples: ["Steam the vegetables to keep them healthy.", "I steamed some fish."], category: "cooking" },
-            { id: 14, text: "Roast", arabic: "يشوي (في الفرن لللحوم)", explanation: "To cook meat or vegetables in an oven.", examples: ["Roast the chicken until brown.", "We roasted nuts in winter."], category: "cooking" },
-            { id: 15, text: "Bake", arabic: "يخبز", explanation: "To cook food (like bread or cake) in an oven.", examples: ["I will bake a chocolate cake.", "Bake the cookies for 10 minutes."], category: "cooking" },
-            { id: 16, text: "Grill", arabic: "يشوي (على الفحم)", explanation: "To cook food over a direct fire or hot metal.", examples: ["Let's grill some burgers.", "He grilled the steaks outside."], category: "cooking" },
-            { id: 17, text: "Mix", arabic: "يخلط", explanation: "To combine ingredients together.", examples: ["Mix the flour and sugar.", "Mix the salad well."], category: "mixing" },
-            { id: 18, text: "Whip", arabic: "يخفق (بسرعة)", explanation: "To beat food rapidly to add air.", examples: ["Whip the cream until thick.", "She whipped the eggs."], category: "mixing" },
-            { id: 19, text: "Add", arabic: "يضيف", explanation: "To put an ingredient into a mixture.", examples: ["Add a pinch of salt.", "Don't add too much water."], category: "mixing" },
-            { id: 20, text: "Sprinkle", arabic: "يرش", explanation: "To scatter small drops or particles over something.", examples: ["Sprinkle cheese on the pizza.", "Sprinkle some sugar on top."], category: "prep" },
-            { id: 21, text: "Stir", arabic: "يحرك", explanation: "To mix in a circular motion with a spoon.", examples: ["Stir the soup constantly.", "Stir your tea."], category: "mixing" },
-            { id: 22, text: "Sift", arabic: "ينخل", explanation: "To put fine ingredients through a sieve.", examples: ["Sift the flour to remove lumps.", "Always sift powdered sugar."], category: "prep" },
-            { id: 23, text: "Grate", arabic: "يبشر", explanation: "To rub food against a grater into small shreds.", examples: ["Grate some cheese for the pasta.", "I grated a carrot."], category: "prep" },
-            { id: 24, text: "Blend", arabic: "يمزج (بالخلاط)", explanation: "To mix thoroughly using a machine.", examples: ["Blend the fruit for a smoothie.", "Blend the soup until smooth."], category: "mixing" },
-            { id: 25, text: "Toast", arabic: "يحمص", explanation: "To brown food by exposure to dry heat.", examples: ["Toast the bread for breakfast.", "I toasted the sandwich."], category: "cooking" },
-            { id: 26, text: "Spread", arabic: "يدهن", explanation: "To distribute a layer of food over a surface.", examples: ["Spread butter on the toast.", "Spread the jam evenly."], category: "prep" },
-            { id: 27, text: "Knead", arabic: "يعجن", explanation: "To work dough with hands by pressing and folding.", examples: ["Knead the pizza dough well.", "Knead it for 10 minutes."], category: "prep" },
-            { id: 28, text: "Taste", arabic: "يتذوق", explanation: "To test the flavor of food.", examples: ["Taste the soup to check the salt.", "Can I taste a piece?"], category: "serving" },
-            { id: 29, text: "Wash", arabic: "يغسل", explanation: "To clean food with water.", examples: ["Wash the vegetables first.", "Wash the apples carefully."], category: "prep" },
-            { id: 30, text: "Measure", arabic: "يقيس", explanation: "To determine the exact amount of an ingredient.", examples: ["Measure one cup of milk.", "Use a spoon to measure it."], category: "prep" },
-            { id: 31, text: "Crush", arabic: "يسحق", explanation: "To press firmly to break or destroy shape.", examples: ["Crush the garlic cloves.", "Crush the ice for the drink."], category: "prep" },
-            { id: 32, text: "Heat", arabic: "يسخن", explanation: "To make something hot.", examples: ["Heat the oil in the pan.", "Heat up your lunch in the microwave."], category: "cooking" },
-            { id: 33, text: "Flip", arabic: "يقلب", explanation: "To turn food over quickly.", examples: ["Flip the pancake.", "Flip the burger when it's brown."], category: "cooking" },
-            { id: 34, text: "Serve", arabic: "يقدم (الطعام)", explanation: "To present food or drink to someone.", examples: ["Serve the dinner hot.", "They serve excellent pizza here."], category: "serving" }
+            { id: 1, text: "Chop", arabic: "يقطع", arabicExp: "تقطيع الطعام إلى قطع صغيرة غير منتظمة.", explanation: "To cut food into small irregular pieces.", examples: ["Chop the onions carefully."] },
+            { id: 2, text: "Slice", arabic: "يشرح", arabicExp: "تقطيع الطعام إلى شرائح مسطحة ورقيقة.", explanation: "To cut food into thin, flat pieces.", examples: ["Slice the bread for toast."] },
+            { id: 3, text: "Dice", arabic: "يقطع لمكعبات", arabicExp: "تقطيع الطعام إلى مكعبات صغيرة.", explanation: "To cut food into small cubes.", examples: ["Dice the potatoes for the soup."] },
+            { id: 4, text: "Peel", arabic: "يقشر", arabicExp: "إزالة القشرة الخارجية للفواكه أو الخضار.", explanation: "To remove the outer skin of fruit or vegetable.", examples: ["Can you peel the apple?"] },
+            { id: 5, text: "Drain", arabic: "يصفي", arabicExp: "إزالة السائل من الطعام باستخدام المصفاة.", explanation: "To remove liquid from food using a strainer.", examples: ["Drain the pasta well."] },
+            { id: 6, text: "Mash", arabic: "يهرس", arabicExp: "سحق الطعام حتى يصبح ناعماً ومهروساً.", explanation: "To crush food into a soft mass.", examples: ["Mash the bananas for the cake."] },
+            { id: 7, text: "Pour", arabic: "يصب", arabicExp: "جعل السائل يتدفق من وعاء إلى آخر.", explanation: "To make liquid flow from a container.", examples: ["Pour the milk into the bowl."] },
+            { id: 8, text: "Break", arabic: "يكسر", arabicExp: "فصل الشيء إلى أجزاء (تستخدم غالباً مع البيض).", explanation: "To separate into pieces (often used for eggs).", examples: ["Break two eggs into the pan."] },
+            { id: 9, text: "Squeeze", arabic: "يعصر", arabicExp: "الضغط بقوة لاستخراج السائل أو العصير.", explanation: "To press firmly to extract liquid.", examples: ["Squeeze the lemon over the fish."] },
+            { id: 10, text: "Fry", arabic: "يقلي", arabicExp: "طبخ الطعام في الزيت الحار.", explanation: "To cook food in hot oil or fat.", examples: ["Fry the eggs in butter."] },
+            { id: 11, text: "Boil", arabic: "يغلي", arabicExp: "طبخ الطعام في الماء المغلي.", explanation: "To cook in water at 100°C.", examples: ["Boil the water for tea."] },
+            { id: 12, text: "Simmer", arabic: "يغلي ببطء", arabicExp: "طبخ الطعام بهدوء على نار خفيفة جداً.", explanation: "To cook gently just below the boiling point.", examples: ["Let the soup simmer for an hour."] },
+            { id: 13, text: "Steam", arabic: "يطبخ على البخار", arabicExp: "طبخ الطعام باستخدام بخار الماء.", explanation: "To cook food using water vapor.", examples: ["Steam the vegetables to keep them healthy."] },
+            { id: 14, text: "Roast", arabic: "يشوي", arabicExp: "طبخ اللحوم أو الخضار في الفرن.", explanation: "To cook meat or vegetables in an oven.", examples: ["Roast the chicken until brown."] },
+            { id: 15, text: "Bake", arabic: "يخبز", arabicExp: "صنع الخبز أو الكعك داخل الفرن.", explanation: "To cook food (like bread or cake) in an oven.", examples: ["I will bake a chocolate cake."] },
+            { id: 16, text: "Grill", arabic: "يشوي على الفحم", arabicExp: "طبخ الطعام مباشرة فوق النار أو المعادن الساخنة.", explanation: "To cook food over a direct fire or hot metal.", examples: ["Let's grill some burgers."] },
+            { id: 17, text: "Mix", arabic: "يخلط", arabicExp: "دمج مكونات مختلفة مع بعضها البعض.", explanation: "To combine ingredients together.", examples: ["Mix the flour and sugar."] },
+            { id: 18, text: "Whip", arabic: "يخفق", arabicExp: "خفق الطعام بسرعة كبيرة لإدخال الهواء فيه.", explanation: "To beat food rapidly to add air.", examples: ["Whip the cream until thick."] },
+            { id: 19, text: "Add", arabic: "يضيف", arabicExp: "وضع مكون إضافي داخل الخليط.", explanation: "To put an ingredient into a mixture.", examples: ["Add a pinch of salt."] },
+            { id: 20, text: "Sprinkle", arabic: "يرش", arabicExp: "نثر قطرات أو حبات صغيرة فوق الطعام.", explanation: "To scatter small drops or particles over something.", examples: ["Sprinkle cheese on the pizza."] },
+            { id: 21, text: "Stir", arabic: "يحرك", arabicExp: "تحريك الخليط بشكل دائري باستخدام ملعقة.", explanation: "To mix in a circular motion with a spoon.", examples: ["Stir the soup constantly."] },
+            { id: 22, text: "Sift", arabic: "ينخل", arabicExp: "تمرير المكونات الجافة عبر المصفاة لمنع التكتل.", explanation: "To put fine ingredients through a sieve.", examples: ["Sift the flour to remove lumps."] },
+            { id: 23, text: "Grate", arabic: "يبشر", arabicExp: "حك الطعام بأداة معدنية لتحويله إلى قطع صغيرة جداً.", explanation: "To rub food against a grater into small shreds.", examples: ["Grate some cheese for the pasta."] },
+            { id: 24, text: "Blend", arabic: "يمزج", arabicExp: "خلط المكونات جيداً باستخدام الخلاط الكهربائي.", explanation: "To mix thoroughly using a machine.", examples: ["Blend the fruit for a smoothie."] },
+            { id: 25, text: "Toast", arabic: "يحمص", arabicExp: "تحمير الخبز باستخدام الحرارة الجافة.", explanation: "To brown food by exposure to dry heat.", examples: ["Toast the bread for breakfast."] },
+            { id: 26, text: "Spread", arabic: "يدهن", arabicExp: "توزيع طبقة من الطعام على سطح معين.", explanation: "To distribute a layer of food over a surface.", examples: ["Spread butter on the toast."] },
+            { id: 27, text: "Knead", arabic: "يعجن", arabicExp: "عجن العجينة باليدين عن طريق الضغط والطي.", explanation: "To work dough with hands by pressing and folding.", examples: ["Knead the pizza dough well."] },
+            { id: 28, text: "Taste", arabic: "يتذوق", arabicExp: "تجربة الطعام لمعرفة نكهته.", explanation: "To test the flavor of food.", examples: ["Taste the soup to check the salt."] },
+            { id: 29, text: "Wash", arabic: "يغسل", arabicExp: "تنظيف الطعام باستخدام الماء.", explanation: "To clean food with water.", examples: ["Wash the vegetables first."] },
+            { id: 30, text: "Measure", arabic: "يقيس", arabicExp: "تحديد الكمية الدقيقة للمكونات.", explanation: "To determine the exact amount of an ingredient.", examples: ["Measure one cup of milk."] },
+            { id: 31, text: "Crush", arabic: "يسحق", arabicExp: "الضغط بقوة لتكسير الشيء أو سحقه تماماً.", explanation: "To press firmly to break or destroy shape.", examples: ["Crush the garlic cloves."] },
+            { id: 32, text: "Heat", arabic: "يسخن", arabicExp: "رفع حرارة الشيء لجعله ساخناً.", explanation: "To make something hot.", examples: ["Heat the oil in the pan."] },
+            { id: 33, text: "Flip", arabic: "يقلب", arabicExp: "قلب الطعام إلى الجهة الأخرى بسرعة.", explanation: "To turn food over quickly.", examples: ["Flip the pancake."] },
+            { id: 34, text: "Serve", arabic: "يقدم", arabicExp: "تقديم الطعام أو الشراب للأشخاص لتناوله.", explanation: "To present food or drink to someone.", examples: ["Serve the dinner hot."] }
         ];
 
         // --- GAME STATE ---
@@ -501,7 +514,7 @@
                     element.innerHTML += ' ✅';
                 }
                 
-                feedbackBox.innerHTML = `<span style="color:var(--correct)">🎉 Correct! (+${pts}) - إجابة صحيحة!</span>`;
+                feedbackBox.innerHTML = `<span style="color:var(--correct)">🎉 Correct! (+${pts})</span>`;
                 if(streak > 0 && streak % 3 === 0) createConfetti();
                 
                 setTimeout(() => nextQuestion(), 1000);
@@ -522,7 +535,7 @@
                         }
                     }, 1500); 
                 } else {
-                    feedbackBox.innerHTML = `<span style="color:var(--wrong)">😅 Oops! Keep trying! - تابع المحاولة!</span>`;
+                    feedbackBox.innerHTML = `<span style="color:var(--wrong)">😅 Oops! Keep trying!</span>`;
                     
                     if(currentMode === 'meaning' || currentMode === 'scenario') {
                         const btns = document.querySelectorAll('.option-btn');
@@ -569,7 +582,6 @@
             
             if (currentMode === 'speed') {
                 timeLeft = 60; 
-                
                 if (currentQIndex >= questions.length) {
                     questions = shuffle([...expressions]).slice(0, 10);
                     currentQIndex = 0;
@@ -643,8 +655,7 @@
             const blankedSentence = sentence.replace(regex, "__________");
 
             container.innerHTML = `
-                <div class="ar-hint">${q.arabic}</div>
-                <div class="question-text" style="font-weight: normal; margin-bottom: 30px;">
+                <div class="ar-hint">${q.arabicExp}</div> <div class="question-text" style="font-weight: normal; margin-bottom: 30px;">
                     ${blankedSentence}
                 </div>
                 <input type="text" id="fill-input" class="text-input" placeholder="Type the missing word here..." autocomplete="off">
@@ -670,7 +681,7 @@
             }
         }
 
-function renderScenarioSolver() {
+        function renderScenarioSolver() {
             const q = questions[currentQIndex];
             const container = getEl('game-container');
             
@@ -678,52 +689,47 @@ function renderScenarioSolver() {
             let options = shuffle([q, ...distractors]);
 
             let actionText = q.explanation.toLowerCase();
-            if (actionText.startsWith("to ")) {
-                actionText = actionText.substring(3); 
-            }
-            if (actionText.endsWith(".")) {
-                actionText = actionText.slice(0, -1);
-            }
+            if (actionText.startsWith("to ")) { actionText = actionText.substring(3); }
+            if (actionText.endsWith(".")) { actionText = actionText.slice(0, -1); }
 
-            // 5 Scenarios focusing ONLY on ADVICE and NOT UNDERSTANDING
+            // Easy Scenarios (Advice & Confusion)
             const scenarios = [
                 {
-                    speaker1: "Novice Cook",
-                    text1: `I was reading this recipe, but I don't understand what it means to <strong>_______</strong> the ingredients. Can you explain?`,
-                    speaker2: "Expert Chef",
-                    text2: `Of course! It just means that you need to ${actionText}.`
-                },
-                {
-                    speaker1: "Friend",
-                    text1: `My food never tastes right. Do you have any advice?`,
-                    speaker2: "You",
-                    text2: `Here is a great tip: always <strong>_______</strong> it first! You have to ${actionText} to get the best flavor.`
-                },
-                {
                     speaker1: "Student",
-                    text1: `Wait, I'm confused. Did you say I should <strong>_______</strong> the potatoes? I didn't understand that part.`,
+                    text1: `Teacher, what does <strong>_______</strong> mean? I don't understand.`,
                     speaker2: "Teacher",
-                    text2: `Yes, exactly. I meant that you need to ${actionText} before moving to the next step.`
+                    text2: `It is easy! It means you have to ${actionText}.`
                 },
                 {
-                    speaker1: "Chef",
-                    text1: `If you want this dish to be perfect, here is my advice: never forget to <strong>_______</strong> it.`,
-                    speaker2: "Trainee",
-                    text2: `I see! So I have to ${actionText}? Thanks for the tip!`
+                    speaker1: "Boy",
+                    text1: `Mom, how can I make this soup better? I need your advice.`,
+                    speaker2: "Mom",
+                    text2: `You should <strong>_______</strong> it! Just ${actionText}.`
                 },
                 {
-                    speaker1: "Brother",
-                    text1: `I'm a bit lost. Am I supposed to just leave this on the stove?`,
-                    speaker2: "You",
-                    text2: `No, my advice is to <strong>_______</strong> it. You have to ${actionText} or it will ruin the dish!`
+                    speaker1: "Helper",
+                    text1: `Chef, I am confused. What should I do now?`,
+                    speaker2: "Chef",
+                    text2: `Please <strong>_______</strong> the food. You need to ${actionText}.`
+                },
+                {
+                    speaker1: "Girl",
+                    text1: `My food is not good today. What is your advice?`,
+                    speaker2: "Friend",
+                    text2: `Always <strong>_______</strong> it! Remember to ${actionText}.`
+                },
+                {
+                    speaker1: "Son",
+                    text1: `I don't know how to cook this. Help!`,
+                    speaker2: "Dad",
+                    text2: `Listen to my advice. First, <strong>_______</strong> it. You must ${actionText}.`
                 }
             ];
 
             const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
 
+            // HNA FIN ZEDNA L-HINT B-L-ARBIYA BLA MAN GOLO L-KELMA
             container.innerHTML = `
-                <div class="ar-hint" style="margin-bottom: 10px;">أكمل الحوار بالكلمة المناسبة</div>
-                
                 <div class="chat-container">
                     <div class="chat-bubble left">
                         <strong>${randomScenario.speaker1}:</strong> "${randomScenario.text1}"
@@ -733,6 +739,75 @@ function renderScenarioSolver() {
                     </div>
                 </div>
 
+                <div class="hint-box">
+                    <strong>💡 تلميح:</strong> ${q.arabicExp}
+                </div>
+
+                <div class="options-grid">
+                    ${options.map(opt => `
+                        <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
+                            ${opt.text}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="feedback-box" class="feedback"></div>
+            `;
+        }
+
+        function renderDragDrop() {
+            const q = questions[currentQIndex];
+            const container = getEl('game-container');
+            
+            const rootWord = q.text.toLowerCase();
+            const sentence = q.examples[0];
+            const regex = new RegExp(rootWord + "[a-z]*", "gi"); 
+            const blankedSentence = sentence.replace(regex, `<span class="drop-zone" id="drop-target">???</span>`);
+
+            let distractors = shuffle(expressions.filter(e => e.id !== q.id)).slice(0, 3);
+            let options = shuffle([q, ...distractors]);
+
+            container.innerHTML = `
+                <div class="ar-hint">${q.arabicExp}</div> <div class="question-text" style="font-weight: normal; margin-bottom: 20px;">
+                    ${blankedSentence}
+                </div>
+                <p style="color:#64748b; margin-bottom: 10px;">Select the correct word to fill the blank:</p>
+                <div class="drag-items">
+                    ${options.map(opt => `
+                        <div class="drag-item" onclick="selectDragWord('${opt.text}', ${opt.id === q.id}, this)">
+                            ${opt.text}
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="feedback-box" class="feedback"></div>
+            `;
+        }
+
+        function selectDragWord(word, isCorrect, element) {
+            getEl('drop-target').innerText = word;
+            getEl('drop-target').style.color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+            getEl('drop-target').style.borderColor = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+            
+            handleAnswer(isCorrect, element);
+        }
+
+        function renderSpeedQuestion() {
+            const q = questions[currentQIndex];
+            const container = getEl('game-container');
+            
+            const rootWord = q.text.toLowerCase();
+            const sentence = q.examples[0];
+            const regex = new RegExp(rootWord + "[a-z]*", "gi"); 
+            const blankedSentence = sentence.replace(regex, "__________");
+
+            let distractors = shuffle(expressions.filter(e => e.id !== q.id)).slice(0, 3);
+            let options = shuffle([q, ...distractors]);
+
+            container.innerHTML = `
+                <div class="timer" id="timer-display">${timeLeft}s</div>
+                <div class="ar-hint">${q.arabicExp}</div> <div class="question-text" style="font-weight: normal; margin-bottom: 20px;">
+                    ${blankedSentence}
+                </div>
+                <p style="color:#64748b; margin-bottom: 15px; font-size: 0.9rem;">Choose the missing word quickly:</p>
                 <div class="options-grid">
                     ${options.map(opt => `
                         <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
@@ -771,6 +846,7 @@ function renderScenarioSolver() {
             
             selectedExps.forEach(ex => {
                 memoryCards.push({ id: ex.id, type: 'eng', text: ex.text });
+                // Use the word itself for memory cards, not the long explanation
                 memoryCards.push({ id: ex.id, type: 'ar', text: ex.arabic.split('(')[0] }); 
             });
             
