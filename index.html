@@ -559,7 +559,6 @@
             stats = { correct: 0, wrong: 0 };
             
             if (mode === 'meaning') {
-                // UPDATE 1: K-n-khtaro 5 dyal l-kalmat, w kol kelma ka-t-t3awd 2 marrat (Char7 + Joumla)
                 let selectedWords = shuffle([...expressions]).slice(0, 5);
                 questions = [];
                 selectedWords.forEach(w => {
@@ -639,7 +638,6 @@
             let distractors = shuffle(expressions.filter(e => e.id !== q.id)).slice(0, 3);
             let options = shuffle([q, ...distractors]);
 
-            // S-soal 1 dyal l-kelma (Char7)
             if (q.qType === 'exp') {
                 container.innerHTML = `
                     <div class="ar-hint" style="text-align:center; background:none; border:none; margin-bottom:10px;">اختر الكلمة الإنجليزية المناسبة لهذا المعنى:</div>
@@ -655,7 +653,6 @@
                     <div id="feedback-box" class="feedback"></div>
                 `;
             } 
-            // S-soal 2 dyal nefs l-kelma (Joumla)
             else {
                 const rootWord = q.text.toLowerCase();
                 const sentence = q.examples[0];
@@ -834,7 +831,7 @@
             }, 1000);
         }
 
-        // UPDATE 2: Memory Match - Bitaqa fiha l-kelma w Bitaqa fiha faragh (__________ )
+        // Memory Match with only Colors (No Emojis)
         function renderMemoryMatch() {
             const container = getEl('game-container');
             
@@ -842,18 +839,15 @@
             memoryCards = [];
             
             const pairColors = ['#fecaca', '#bbf7d0', '#bfdbfe', '#fef08a', '#e9d5ff', '#fbcfe8', '#fed7aa', '#ccfbf1'];
-            const pairEmojis = ['🍎', '🔥', '🥣', '🍳', '🧂', '💧', '🍋', '🍞'];
             
             selectedExps.forEach((ex, i) => {
                 let color = pairColors[i];
-                let emoji = pairEmojis[i];
                 
-                // L-Joumla radditha fiha faragh bhal (I need to __________ the onions)
                 const regex = new RegExp(ex.text + "[a-z]*", "gi");
                 let blankedSentence = ex.examples[0].replace(regex, "__________");
 
-                memoryCards.push({ id: ex.id, type: 'eng', text: ex.text, color: color, emoji: emoji });
-                memoryCards.push({ id: ex.id, type: 'sentence', text: blankedSentence, color: color, emoji: emoji }); 
+                memoryCards.push({ id: ex.id, type: 'eng', text: ex.text, color: color });
+                memoryCards.push({ id: ex.id, type: 'sentence', text: blankedSentence, color: color }); 
             });
             
             memoryCards = shuffle(memoryCards);
@@ -865,8 +859,7 @@
                 <div class="memory-grid" id="memory-grid" style="pointer-events: none;">
                     ${memoryCards.map((card, idx) => `
                         <div class="memory-card flipped" data-idx="${idx}" data-id="${card.id}" data-bg="${card.color}" onclick="flipCard(${idx}, this)" style="background-color: ${card.color}; color: #1e293b; border: 2px solid #cbd5e1;">
-                            <span class="card-content" style="display:flex; flex-direction:column; align-items:center;">
-                                <span style="font-size: 1.5rem; margin-bottom: 5px;">${card.emoji}</span>
+                            <span class="card-content" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
                                 <span>${card.text}</span>
                             </span>
                         </div>
