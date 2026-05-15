@@ -82,7 +82,7 @@
         .menu-card h3 { color: var(--text-eng); margin-bottom: 5px; }
         .menu-card p { font-family: 'Amiri', serif; color: var(--text-ar); direction: rtl; }
 
-        /* --- Game Header (Score/Streak) --- */
+        /* --- Game Header --- */
         .game-header {
             display: flex;
             justify-content: space-between;
@@ -153,7 +153,6 @@
             border-bottom-right-radius: 4px;
         }
 
-        /* Hint Box Arabic */
         .hint-box {
             background: #fff8e1;
             border-right: 4px solid #ffc107;
@@ -179,11 +178,10 @@
             border: 2px solid #e9ecef;
             padding: 15px;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: 0.2s;
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
             color: var(--text-eng);
         }
 
@@ -231,13 +229,13 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: bold;
+            font-size: 1rem;
             transition: 0.3s;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-family: 'Amiri', serif;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.3;
         }
 
         .memory-card.flipped {
@@ -253,7 +251,6 @@
             cursor: default;
         }
 
-        /* --- Drag and Drop --- */
         .drop-zone {
             display: inline-block;
             min-width: 120px;
@@ -326,6 +323,7 @@
             .options-grid { grid-template-columns: 1fr; }
             .memory-grid { grid-template-columns: repeat(2, 1fr); }
             header h1 { font-size: 1.5rem; }
+            .memory-card { font-size: 0.85rem; padding: 10px; }
         }
     </style>
 </head>
@@ -342,8 +340,8 @@
             <div class="menu-grid">
                 <div class="menu-card" onclick="startGame('meaning')">
                     <div class="icon">🧩</div>
-                    <h3>Sentence Matcher</h3>
-                    <p>اختر الكلمة لإكمال الجملة</p>
+                    <h3>Meaning Matcher</h3>
+                    <p>المعنى والجملة (أسئلة متنوعة)</p>
                 </div>
                 <div class="menu-card" onclick="startGame('fill')">
                     <div class="icon">✍️</div>
@@ -368,7 +366,7 @@
                 <div class="menu-card" onclick="startGame('memory')">
                     <div class="icon">🧠</div>
                     <h3>Memory Match</h3>
-                    <p>لعبة الذاكرة بالألوان</p>
+                    <p>لعبة الذاكرة بالألوان والجمل</p>
                 </div>
             </div>
         </div>
@@ -414,108 +412,108 @@
     </div>
 
     <script>
-        // --- DATA STRUCTURE WITH CUSTOM REAL-LIFE DIALOGUES FOR EVERY WORD ---
+        // --- DATA STRUCTURE WITH ALL REQUIRED FIELDS ---
         const expressions = [
-            { id: 1, text: "Chop", arabicExp: "تقطيع الطعام إلى قطع صغيرة غير منتظمة.", explanation: "To cut food into small irregular pieces.", examples: ["I need to chop the onions carefully."],
+            { id: 1, text: "Chop", arabic: "يقطع", arabicExp: "تقطيع الطعام إلى قطع صغيرة غير منتظمة.", explanation: "To cut food into small irregular pieces.", examples: ["I need to chop the onions carefully."],
               dialogue: { sp1: "Mom", t1: "Can you help me with these onions?", sp2: "You", t2: "Sure! I will _______ them into small pieces." } },
             
-            { id: 2, text: "Slice", arabicExp: "تقطيع الطعام إلى شرائح مسطحة ورقيقة.", explanation: "To cut food into thin, flat pieces.", examples: ["Please slice the bread for toast."],
+            { id: 2, text: "Slice", arabic: "يشرح", arabicExp: "تقطيع الطعام إلى شرائح مسطحة ورقيقة.", explanation: "To cut food into thin, flat pieces.", examples: ["Please slice the bread for toast."],
               dialogue: { sp1: "Customer", t1: "I need some tomatoes for my sandwich.", sp2: "Worker", t2: "I will _______ them thinly for you." } },
             
-            { id: 3, text: "Dice", arabicExp: "تقطيع الطعام إلى مكعبات صغيرة.", explanation: "To cut food into small cubes.", examples: ["You should dice the potatoes for the soup."],
+            { id: 3, text: "Dice", arabic: "يقطع مكعبات", arabicExp: "تقطيع الطعام إلى مكعبات صغيرة.", explanation: "To cut food into small cubes.", examples: ["You should dice the potatoes for the soup."],
               dialogue: { sp1: "Chef", t1: "How should I cut the potatoes for the soup?", sp2: "You", t2: "You should _______ them into small cubes." } },
             
-            { id: 4, text: "Peel", arabicExp: "إزالة القشرة الخارجية للفواكه أو الخضار.", explanation: "To remove the outer skin of fruit or vegetable.", examples: ["Can you peel the apple for me?"],
+            { id: 4, text: "Peel", arabic: "يقشر", arabicExp: "إزالة القشرة الخارجية للفواكه أو الخضار.", explanation: "To remove the outer skin of fruit or vegetable.", examples: ["Can you peel the apple for me?"],
               dialogue: { sp1: "Friend", t1: "I want to eat this orange.", sp2: "You", t2: "Let me _______ the skin off for you first." } },
             
-            { id: 5, text: "Drain", arabicExp: "إزالة السائل من الطعام باستخدام المصفاة.", explanation: "To remove liquid from food using a strainer.", examples: ["Don't forget to drain the pasta well."],
+            { id: 5, text: "Drain", arabic: "يصفي", arabicExp: "إزالة السائل من الطعام باستخدام المصفاة.", explanation: "To remove liquid from food using a strainer.", examples: ["Don't forget to drain the pasta well."],
               dialogue: { sp1: "Mom", t1: "The pasta is done boiling.", sp2: "You", t2: "Okay, I will use a strainer to _______ the water." } },
             
-            { id: 6, text: "Mash", arabicExp: "سحق الطعام حتى يصبح ناعماً ومهروساً.", explanation: "To crush food into a soft mass.", examples: ["We need to mash the bananas for the cake."],
+            { id: 6, text: "Mash", arabic: "يهرس", arabicExp: "سحق الطعام حتى يصبح ناعماً ومهروساً.", explanation: "To crush food into a soft mass.", examples: ["We need to mash the bananas for the cake."],
               dialogue: { sp1: "Dad", t1: "We are having steak. What about the potatoes?", sp2: "You", t2: "I will _______ them until they are soft." } },
             
-            { id: 7, text: "Pour", arabicExp: "جعل السائل يتدفق من وعاء إلى آخر.", explanation: "To make liquid flow from a container.", examples: ["Can you pour the milk into the bowl?"],
+            { id: 7, text: "Pour", arabic: "يصب", arabicExp: "جعل السائل يتدفق من وعاء إلى آخر.", explanation: "To make liquid flow from a container.", examples: ["Can you pour the milk into the bowl?"],
               dialogue: { sp1: "Guest", t1: "I am really thirsty.", sp2: "You", t2: "Let me _______ some cold water into your glass." } },
             
-            { id: 8, text: "Break", arabicExp: "فصل الشيء إلى أجزاء (تستخدم غالباً مع البيض).", explanation: "To separate into pieces (often used for eggs).", examples: ["I will break two eggs into the pan."],
+            { id: 8, text: "Break", arabic: "يكسر", arabicExp: "فصل الشيء إلى أجزاء (تستخدم غالباً مع البيض).", explanation: "To separate into pieces (often used for eggs).", examples: ["I will break two eggs into the pan."],
               dialogue: { sp1: "Baker", t1: "We need eggs for the cake.", sp2: "You", t2: "I will _______ two eggs into the bowl." } },
             
-            { id: 9, text: "Squeeze", arabicExp: "الضغط بقوة لاستخراج السائل أو العصير.", explanation: "To press firmly to extract liquid.", examples: ["You should squeeze the lemon over the fish."],
+            { id: 9, text: "Squeeze", arabic: "يعصر", arabicExp: "الضغط بقوة لاستخراج السائل أو العصير.", explanation: "To press firmly to extract liquid.", examples: ["You should squeeze the lemon over the fish."],
               dialogue: { sp1: "Friend", t1: "This salad needs some lemon.", sp2: "You", t2: "Here, you can _______ some fresh lemon juice on it." } },
             
-            { id: 10, text: "Fry", arabicExp: "طبخ الطعام في الزيت الحار.", explanation: "To cook food in hot oil or fat.", examples: ["I will fry the eggs in butter."],
+            { id: 10, text: "Fry", arabic: "يقلي", arabicExp: "طبخ الطعام في الزيت الحار.", explanation: "To cook food in hot oil or fat.", examples: ["I will fry the eggs in butter."],
               dialogue: { sp1: "Sister", t1: "How do you make these eggs so crispy?", sp2: "You", t2: "I _______ them in hot oil." } },
             
-            { id: 11, text: "Boil", arabicExp: "طبخ الطعام في الماء المغلي.", explanation: "To cook in water at 100°C.", examples: ["Let's boil the water for tea."],
+            { id: 11, text: "Boil", arabic: "يغلي", arabicExp: "طبخ الطعام في الماء المغلي.", explanation: "To cook in water at 100°C.", examples: ["Let's boil the water for tea."],
               dialogue: { sp1: "Brother", t1: "I want to make some hot tea.", sp2: "You", t2: "First, you need to _______ some water in the kettle." } },
             
-            { id: 12, text: "Simmer", arabicExp: "طبخ الطعام بهدوء على نار خفيفة جداً.", explanation: "To cook gently just below the boiling point.", examples: ["Let the soup simmer for an hour."],
+            { id: 12, text: "Simmer", arabic: "يغلي ببطء", arabicExp: "طبخ الطعام بهدوء على نار خفيفة جداً.", explanation: "To cook gently just below the boiling point.", examples: ["Let the soup simmer for an hour."],
               dialogue: { sp1: "Chef", t1: "The sauce is boiling too fast!", sp2: "You", t2: "Turn down the heat and let it _______ slowly." } },
             
-            { id: 13, text: "Steam", arabicExp: "طبخ الطعام باستخدام بخار الماء.", explanation: "To cook food using water vapor.", examples: ["It's healthy to steam the vegetables."],
+            { id: 13, text: "Steam", arabic: "يطبخ على البخار", arabicExp: "طبخ الطعام باستخدام بخار الماء.", explanation: "To cook food using water vapor.", examples: ["It's healthy to steam the vegetables."],
               dialogue: { sp1: "Mom", t1: "I want to cook the vegetables without oil.", sp2: "You", t2: "We can _______ them over hot water." } },
             
-            { id: 14, text: "Roast", arabicExp: "طبخ اللحوم أو الخضار في الفرن.", explanation: "To cook meat or vegetables in an oven.", examples: ["We will roast the chicken until brown."],
+            { id: 14, text: "Roast", arabic: "يشوي", arabicExp: "طبخ اللحوم أو الخضار في الفرن.", explanation: "To cook meat or vegetables in an oven.", examples: ["We will roast the chicken until brown."],
               dialogue: { sp1: "Dad", t1: "What's for dinner on Sunday?", sp2: "You", t2: "We are going to _______ a whole chicken in the oven." } },
             
-            { id: 15, text: "Bake", arabicExp: "صنع الخبز أو الكعك داخل الفرن.", explanation: "To cook food (like bread or cake) in an oven.", examples: ["I will bake a chocolate cake."],
+            { id: 15, text: "Bake", arabic: "يخبز", arabicExp: "صنع الخبز أو الكعك داخل الفرن.", explanation: "To cook food (like bread or cake) in an oven.", examples: ["I will bake a chocolate cake."],
               dialogue: { sp1: "Friend", t1: "It's my birthday tomorrow!", sp2: "You", t2: "I am going to _______ a delicious cake for you." } },
             
-            { id: 16, text: "Grill", arabicExp: "طبخ الطعام مباشرة فوق النار أو المعادن الساخنة.", explanation: "To cook food over a direct fire or hot metal.", examples: ["Let's grill some burgers outside."],
+            { id: 16, text: "Grill", arabic: "يشوي على الفحم", arabicExp: "طبخ الطعام مباشرة فوق النار أو المعادن الساخنة.", explanation: "To cook food over a direct fire or hot metal.", examples: ["Let's grill some burgers outside."],
               dialogue: { sp1: "Uncle", t1: "The weather is perfect for a barbecue.", sp2: "You", t2: "Yes! Let's _______ some burgers outside." } },
             
-            { id: 17, text: "Mix", arabicExp: "دمج مكونات مختلفة مع بعضها البعض.", explanation: "To combine ingredients together.", examples: ["You should mix the flour and sugar."],
+            { id: 17, text: "Mix", arabic: "يخلط", arabicExp: "دمج مكونات مختلفة مع بعضها البعض.", explanation: "To combine ingredients together.", examples: ["You should mix the flour and sugar."],
               dialogue: { sp1: "Baker", t1: "I put the flour, sugar, and eggs in the bowl.", sp2: "You", t2: "Now use a spoon to _______ them all together." } },
             
-            { id: 18, text: "Whip", arabicExp: "خفق الطعام بسرعة كبيرة لإدخال الهواء فيه.", explanation: "To beat food rapidly to add air.", examples: ["I will whip the cream until thick."],
+            { id: 18, text: "Whip", arabic: "يخفق", arabicExp: "خفق الطعام بسرعة كبيرة لإدخال الهواء فيه.", explanation: "To beat food rapidly to add air.", examples: ["I will whip the cream until thick."],
               dialogue: { sp1: "Waiter", t1: "This dessert needs some fresh cream on top.", sp2: "Chef", t2: "I will _______ the cream until it's light and fluffy." } },
             
-            { id: 19, text: "Add", arabicExp: "وضع مكون إضافي داخل الخليط.", explanation: "To put an ingredient into a mixture.", examples: ["Please add a pinch of salt."],
+            { id: 19, text: "Add", arabic: "يضيف", arabicExp: "وضع مكون إضافي داخل الخليط.", explanation: "To put an ingredient into a mixture.", examples: ["Please add a pinch of salt."],
               dialogue: { sp1: "Friend", t1: "The soup tastes a little boring.", sp2: "You", t2: "You should _______ a pinch of salt to it." } },
             
-            { id: 20, text: "Sprinkle", arabicExp: "نثر قطرات أو حبات صغيرة فوق الطعام.", explanation: "To scatter small drops or particles over something.", examples: ["I like to sprinkle cheese on the pizza."],
+            { id: 20, text: "Sprinkle", arabic: "يرش", arabicExp: "نثر قطرات أو حبات صغيرة فوق الطعام.", explanation: "To scatter small drops or particles over something.", examples: ["I like to sprinkle cheese on the pizza."],
               dialogue: { sp1: "Kid", t1: "I love pizza!", sp2: "Mom", t2: "Let me _______ some extra cheese on top for you." } },
             
-            { id: 21, text: "Stir", arabicExp: "تحريك الخليط بشكل دائري باستخدام ملعقة.", explanation: "To mix in a circular motion with a spoon.", examples: ["Make sure you stir the soup constantly."],
+            { id: 21, text: "Stir", arabic: "يحرك", arabicExp: "تحريك الخليط بشكل دائري باستخدام ملعقة.", explanation: "To mix in a circular motion with a spoon.", examples: ["Make sure you stir the soup constantly."],
               dialogue: { sp1: "Sister", t1: "I put sugar in my coffee, but it's all at the bottom.", sp2: "You", t2: "You need to use a spoon to _______ it." } },
             
-            { id: 22, text: "Sift", arabicExp: "تمرير المكونات الجافة عبر المصفاة لمنع التكتل.", explanation: "To put fine ingredients through a sieve.", examples: ["You must sift the flour to remove lumps."],
+            { id: 22, text: "Sift", arabic: "ينخل", arabicExp: "تمرير المكونات الجافة عبر المصفاة لمنع التكتل.", explanation: "To put fine ingredients through a sieve.", examples: ["You must sift the flour to remove lumps."],
               dialogue: { sp1: "Baker", t1: "The flour has too many lumps.", sp2: "You", t2: "We should _______ it through a net first." } },
             
-            { id: 23, text: "Grate", arabicExp: "حك الطعام بأداة معدنية لتحويله إلى قطع صغيرة جداً.", explanation: "To rub food against a grater into small shreds.", examples: ["Can you grate some cheese for the pasta?"],
+            { id: 23, text: "Grate", arabic: "يبشر", arabicExp: "حك الطعام بأداة معدنية لتحويله إلى قطع صغيرة جداً.", explanation: "To rub food against a grater into small shreds.", examples: ["Can you grate some cheese for the pasta?"],
               dialogue: { sp1: "Chef", t1: "We need fine pieces of carrots for the salad.", sp2: "You", t2: "I will use this metal tool to _______ them." } },
             
-            { id: 24, text: "Blend", arabicExp: "خلط المكونات جيداً باستخدام الخلاط الكهربائي.", explanation: "To mix thoroughly using a machine.", examples: ["I will blend the fruit for a smoothie."],
+            { id: 24, text: "Blend", arabic: "يمزج", arabicExp: "خلط المكونات جيداً باستخدام الخلاط الكهربائي.", explanation: "To mix thoroughly using a machine.", examples: ["I will blend the fruit for a smoothie."],
               dialogue: { sp1: "Friend", t1: "I want a fruit smoothie.", sp2: "You", t2: "Put the fruits in the machine and I will _______ them." } },
             
-            { id: 25, text: "Toast", arabicExp: "تحمير الخبز باستخدام الحرارة الجافة.", explanation: "To brown food by exposure to dry heat.", examples: ["I will toast the bread for breakfast."],
+            { id: 25, text: "Toast", arabic: "يحمص", arabicExp: "تحمير الخبز باستخدام الحرارة الجافة.", explanation: "To brown food by exposure to dry heat.", examples: ["I will toast the bread for breakfast."],
               dialogue: { sp1: "Brother", t1: "I like my bread warm and crunchy.", sp2: "You", t2: "Put it in the machine to _______ it for two minutes." } },
             
-            { id: 26, text: "Spread", arabicExp: "توزيع طبقة من الطعام على سطح معين.", explanation: "To distribute a layer of food over a surface.", examples: ["She likes to spread butter on the toast."],
+            { id: 26, text: "Spread", arabic: "يدهن", arabicExp: "توزيع طبقة من الطعام على سطح معين.", explanation: "To distribute a layer of food over a surface.", examples: ["She likes to spread butter on the toast."],
               dialogue: { sp1: "Kid", t1: "I want jam on my bread!", sp2: "Mom", t2: "Use a knife to _______ it evenly." } },
             
-            { id: 27, text: "Knead", arabicExp: "عجن العجينة باليدين عن طريق الضغط والطي.", explanation: "To work dough with hands by pressing and folding.", examples: ["You must knead the pizza dough well."],
+            { id: 27, text: "Knead", arabic: "يعجن", arabicExp: "عجن العجينة باليدين عن طريق الضغط والطي.", explanation: "To work dough with hands by pressing and folding.", examples: ["You must knead the pizza dough well."],
               dialogue: { sp1: "Baker", t1: "The pizza dough is ready to be worked.", sp2: "You", t2: "I will use my hands to _______ it." } },
             
-            { id: 28, text: "Taste", arabicExp: "تجربة الطعام لمعرفة نكهته.", explanation: "To test the flavor of food.", examples: ["Let's taste the soup to check the salt."],
+            { id: 28, text: "Taste", arabic: "يتذوق", arabicExp: "تجربة الطعام لمعرفة نكهته.", explanation: "To test the flavor of food.", examples: ["Let's taste the soup to check the salt."],
               dialogue: { sp1: "Chef", t1: "I added all the spices to the soup.", sp2: "You", t2: "Let me _______ it to see if it is good." } },
             
-            { id: 29, text: "Wash", arabicExp: "تنظيف الطعام باستخدام الماء.", explanation: "To clean food with water.", examples: ["You should wash the vegetables first."],
+            { id: 29, text: "Wash", arabic: "يغسل", arabicExp: "تنظيف الطعام باستخدام الماء.", explanation: "To clean food with water.", examples: ["You should wash the vegetables first."],
               dialogue: { sp1: "Mom", t1: "I just bought these apples from the market.", sp2: "You", t2: "Don't eat them yet! We must _______ them with water first." } },
             
-            { id: 30, text: "Measure", arabicExp: "تحديد الكمية الدقيقة للمكونات.", explanation: "To determine the exact amount of an ingredient.", examples: ["Please measure one cup of milk."],
+            { id: 30, text: "Measure", arabic: "يقيس", arabicExp: "تحديد الكمية الدقيقة للمكونات.", explanation: "To determine the exact amount of an ingredient.", examples: ["Please measure one cup of milk."],
               dialogue: { sp1: "Baker", t1: "How much milk do we need for the cake?", sp2: "You", t2: "Use a cup to _______ exactly 200ml." } },
             
-            { id: 31, text: "Crush", arabicExp: "الضغط بقوة لتكسير الشيء أو سحقه تماماً.", explanation: "To press firmly to break or destroy shape.", examples: ["We need to crush the garlic cloves."],
+            { id: 31, text: "Crush", arabic: "يسحق", arabicExp: "الضغط بقوة لتكسير الشيء أو سحقه تماماً.", explanation: "To press firmly to break or destroy shape.", examples: ["We need to crush the garlic cloves."],
               dialogue: { sp1: "Chef", t1: "We need garlic paste for the sauce.", sp2: "You", t2: "I will _______ the garlic cloves completely." } },
             
-            { id: 32, text: "Heat", arabicExp: "رفع حرارة الشيء لجعله ساخناً.", explanation: "To make something hot.", examples: ["Can you heat the oil in the pan?"],
+            { id: 32, text: "Heat", arabic: "يسخن", arabicExp: "رفع حرارة الشيء لجعله ساخناً.", explanation: "To make something hot.", examples: ["Can you heat the oil in the pan?"],
               dialogue: { sp1: "Friend", t1: "My pizza from yesterday is cold.", sp2: "You", t2: "Put it in the microwave to _______ it up." } },
             
-            { id: 33, text: "Flip", arabicExp: "قلب الطعام إلى الجهة الأخرى بسرعة.", explanation: "To turn food over quickly.", examples: ["It is time to flip the pancake."],
+            { id: 33, text: "Flip", arabic: "يقلب", arabicExp: "قلب الطعام إلى الجهة الأخرى بسرعة.", explanation: "To turn food over quickly.", examples: ["It is time to flip the pancake."],
               dialogue: { sp1: "Cook", t1: "The pancake is brown on one side.", sp2: "You", t2: "Use a spatula to _______ it over quickly!" } },
             
-            { id: 34, text: "Serve", arabicExp: "تقديم الطعام أو الشراب للأشخاص لتناوله.", explanation: "To present food or drink to someone.", examples: ["We will serve the dinner hot."],
+            { id: 34, text: "Serve", arabic: "يقدم", arabicExp: "تقديم الطعام أو الشراب للأشخاص لتناوله.", explanation: "To present food or drink to someone.", examples: ["We will serve the dinner hot."],
               dialogue: { sp1: "Host", t1: "The dinner is finally ready.", sp2: "You", t2: "Great, let's take the plates and _______ the food to the guests." } }
         ];
 
@@ -691,33 +689,51 @@
 
         // --- RENDERERS ---
 
-        // 1. UPDATE: Meaning Matcher is now "Sentence Matcher" (English to English Options)
+        // 1. UPDATE: MEANING MATCHER (Alternating between Definition and Fill in the blank)
         function renderMeaningMatcher() {
             const q = questions[currentQIndex];
             const container = getEl('game-container');
             
-            const rootWord = q.text.toLowerCase();
-            const sentence = q.examples[0];
-            const regex = new RegExp(rootWord + "[a-z]*", "gi"); 
-            const blankedSentence = sentence.replace(regex, "__________");
-
             let distractors = shuffle(expressions.filter(e => e.id !== q.id)).slice(0, 3);
             let options = shuffle([q, ...distractors]);
 
-            container.innerHTML = `
-                <div class="ar-hint" style="text-align:center; background:none; border:none; margin-bottom:10px;">اختر الكلمة المناسبة لإكمال الجملة:</div>
-                <div class="question-text" style="font-size: 1.5rem; margin-bottom: 30px; font-weight: normal; padding:20px; background:#f8fafc; border-radius:10px; border-left:4px solid #667eea;">
-                    ${blankedSentence}
-                </div>
-                <div class="options-grid">
-                    ${options.map(opt => `
-                        <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
-                            <strong>${opt.text}</strong>
-                        </button>
-                    `).join('')}
-                </div>
-                <div id="feedback-box" class="feedback"></div>
-            `;
+            if (currentQIndex % 2 === 0) {
+                // S-soal 1: K-y-ban l-Arbiya w Ch-char7 b-l-Anglais
+                container.innerHTML = `
+                    <div class="ar-hint" style="text-align:center; background:none; border:none; margin-bottom:10px;">اختر الكلمة الإنجليزية المناسبة لهذا المعنى:</div>
+                    <div class="question-text" style="font-size: 2.8rem; margin-bottom: 10px; color: var(--text-eng);">${q.arabic}</div>
+                    <div style="font-size: 1.2rem; color: #4b5563; margin-bottom: 30px; font-weight: 600;">${q.explanation}</div>
+                    <div class="options-grid">
+                        ${options.map(opt => `
+                            <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
+                                <strong>${opt.text}</strong>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-box" class="feedback"></div>
+                `;
+            } else {
+                // S-soal 2: K-t-ban joumla fiha faragh b-l-Anglais (bhalma tlbti)
+                const rootWord = q.text.toLowerCase();
+                const sentence = q.examples[0];
+                const regex = new RegExp(rootWord + "[a-z]*", "gi"); 
+                const blankedSentence = sentence.replace(regex, "__________");
+
+                container.innerHTML = `
+                    <div class="ar-hint" style="text-align:center; background:none; border:none; margin-bottom:10px;">أكمل الجملة بالكلمة الصحيحة:</div>
+                    <div class="question-text" style="font-size: 1.5rem; margin-bottom: 30px; font-weight: normal; padding:20px; background:#f8fafc; border-radius:10px; border-left:4px solid #667eea; line-height: 1.5;">
+                        ${blankedSentence}
+                    </div>
+                    <div class="options-grid">
+                        ${options.map(opt => `
+                            <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
+                                <strong>${opt.text}</strong>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-box" class="feedback"></div>
+                `;
+            }
         }
 
         function renderFillInBlank() {
@@ -781,7 +797,7 @@
                 <div class="options-grid">
                     ${options.map(opt => `
                         <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
-                            ${opt.text}
+                            <strong>${opt.text}</strong>
                         </button>
                     `).join('')}
                 </div>
@@ -848,7 +864,7 @@
                 <div class="options-grid">
                     ${options.map(opt => `
                         <button class="option-btn" data-correct="${opt.id === q.id}" onclick="handleAnswer(${opt.id === q.id}, this)">
-                            ${opt.text}
+                            <strong>${opt.text}</strong>
                         </button>
                     `).join('')}
                 </div>
@@ -875,22 +891,29 @@
             }, 1000);
         }
 
-        // 2. UPDATE: Memory Match Colors & Emojis
+        // 2. UPDATE: MEMORY MATCH (Colors, Emojis, and Short Sentences)
         function renderMemoryMatch() {
             const container = getEl('game-container');
             
             let selectedExps = shuffle([...expressions]).slice(0, 8);
             memoryCards = [];
             
-            // 8 Distinct colors and Emojis to help memorize visually!
+            // L-alwan w Emojis bach y-s-helo l-hifd 3la d-dmagh f 5 d-tawan
             const pairColors = ['#fecaca', '#bbf7d0', '#bfdbfe', '#fef08a', '#e9d5ff', '#fbcfe8', '#fed7aa', '#ccfbf1'];
             const pairEmojis = ['🍎', '🔥', '🥣', '🍳', '🧂', '💧', '🍋', '🍞'];
             
             selectedExps.forEach((ex, i) => {
                 let color = pairColors[i];
                 let emoji = pairEmojis[i];
+                
+                // K-n-khelliw l-kelma m-ktouba b-khat ghlid wsat l-joumla
+                const regex = new RegExp(ex.text + "[a-z]*", "gi");
+                let highlightedSentence = ex.examples[0].replace(regex, match => `<b>${match}</b>`);
+
+                // Bitaqa 1: L-kelma (Word)
                 memoryCards.push({ id: ex.id, type: 'eng', text: ex.text, color: color, emoji: emoji });
-                memoryCards.push({ id: ex.id, type: 'ar', text: ex.arabicExp, color: color, emoji: emoji }); 
+                // Bitaqa 2: L-joumla qssira (Sentence with Word)
+                memoryCards.push({ id: ex.id, type: 'sentence', text: highlightedSentence, color: color, emoji: emoji }); 
             });
             
             memoryCards = shuffle(memoryCards);
@@ -898,7 +921,7 @@
             matchedPairs = 0;
 
             container.innerHTML = `
-                <div class="ar-hint" style="background:none; border:none; text-align:center;">طابق الكلمة الإنجليزية مع الشرح المناسب</div>
+                <div class="ar-hint" style="background:none; border:none; text-align:center;">طابق الكلمة الإنجليزية مع الجملة المناسبة لها</div>
                 <div class="memory-grid" id="memory-grid" style="pointer-events: none;">
                     ${memoryCards.map((card, idx) => `
                         <div class="memory-card flipped" data-idx="${idx}" data-id="${card.id}" data-bg="${card.color}" onclick="flipCard(${idx}, this)" style="background-color: ${card.color}; color: #1e293b; border: 2px solid #cbd5e1;">
@@ -930,7 +953,7 @@
                         const cards = grid.querySelectorAll('.memory-card');
                         cards.forEach(card => {
                             card.classList.remove('flipped');
-                            card.style.backgroundColor = ''; // Remove inline color to hide it
+                            card.style.backgroundColor = ''; 
                             card.style.color = 'transparent';
                             card.style.borderColor = 'transparent';
                             card.querySelector('.card-content').style.display = 'none';
@@ -947,7 +970,6 @@
             if (flippedCards.length >= 2 || element.classList.contains('flipped') || element.classList.contains('matched')) return;
 
             element.classList.add('flipped');
-            // Bring back the colors and emoji when clicked!
             element.style.backgroundColor = element.dataset.bg;
             element.style.color = '#1e293b';
             element.style.borderColor = '#cbd5e1';
@@ -978,7 +1000,6 @@
                     setTimeout(endGame, 1000);
                 }
             } else {
-                // Hide again if wrong
                 card1.element.classList.remove('flipped');
                 card1.element.style.backgroundColor = '';
                 card1.element.style.color = 'transparent';
